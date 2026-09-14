@@ -1,0 +1,1514 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Ursinho Aventura</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --pink: #f4b8cb;
+        --blue: #b9dfeb;
+        --brown: #a97960;
+        --ink: #5a3e35;
+        --cream: #fffaf3;
+        --green: #acd09d;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--cream);
+        color: var(--ink);
+        font-family: Nunito, sans-serif;
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+        border: 0;
+      }
+      .screen {
+        display: none;
+        min-height: 100vh;
+      }
+      .screen.active {
+        display: block;
+      }
+      .account {
+        max-width: 1050px;
+        margin: auto;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 410px;
+        gap: 75px;
+        align-items: center;
+        padding: 35px 25px;
+      }
+      .logo {
+        width: 82px;
+        height: 82px;
+        border-radius: 28px;
+        background: var(--pink);
+        display: grid;
+        place-items: center;
+        font-size: 32px;
+        color: #fff;
+        box-shadow: 0 8px #db98af;
+        transform: rotate(-5deg);
+      }
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: #a56e7b;
+        font-weight: 900;
+      }
+      .brand h1 {
+        font: 800 clamp(55px, 8vw, 83px)/0.82 "Baloo 2";
+        margin: 25px 0 18px;
+      }
+      .brand h1 em,
+      h2 em {
+        color: #c4708a;
+        font-style: normal;
+      }
+      .intro {
+        max-width: 340px;
+        line-height: 1.4;
+      }
+      .stats {
+        display: flex;
+        gap: 20px;
+        color: #906559;
+        margin-top: 23px;
+        font-size: 13px;
+      }
+      .panel {
+        background: #fffdfbde;
+        border: 3px solid #f0d9d7;
+        border-radius: 25px;
+        box-shadow: 0 12px #b5826d1c;
+        padding: 28px;
+      }
+      .panel h2 {
+        font: 800 30px "Baloo 2";
+        margin: 12px 0 0;
+      }
+      .muted {
+        font-size: 12px;
+        color: #a38379;
+        margin: 0 0 23px;
+      }
+      .account label,
+      .account legend {
+        font-size: 13px;
+      }
+      .account > label {
+        display: block;
+        margin-bottom: 8px;
+      }
+      .account input[type="text"],
+      .account input:not([type]) {
+        width: 100%;
+        border: 2px solid #ead6d2;
+        border-radius: 12px;
+        padding: 13px;
+        outline: 0;
+        margin-bottom: 21px;
+      }
+      .account input:focus {
+        border-color: #72aabe;
+      }
+      .account fieldset {
+        border: 0;
+        padding: 0;
+        margin: 0 0 20px;
+      }
+      .choices {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        margin-top: 9px;
+      }
+      .choices input {
+        display: none;
+      }
+      .choice {
+        border: 2px solid #ead6d2;
+        border-radius: 14px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        position: relative;
+      }
+      .choices input:checked + .choice {
+        border-color: #da8ea4;
+        background: #fff0f5;
+      }
+      .choice small {
+        position: absolute;
+        bottom: 6px;
+        right: 8px;
+        color: #a78a7d;
+        font-size: 9px;
+      }
+      .bear {
+        display: inline-block;
+        position: relative;
+        width: 55px;
+        height: 48px;
+      }
+      .bear:before {
+        content: "•ᴗ•";
+        display: grid;
+        place-items: center;
+        position: absolute;
+        left: 9px;
+        bottom: 0;
+        width: 38px;
+        height: 36px;
+        border-radius: 46%;
+        background: #b88467;
+        color: #4c332c;
+        font-size: 15px;
+        font-weight: 900;
+        z-index: 2;
+      }
+      .bear:after {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 5px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #95634e;
+        box-shadow: 30px 0 #95634e;
+      }
+      .boy .bear:before {
+        background: #b88467;
+      }
+      .boy .bear:after {
+        box-shadow: 30px 0 #95634e;
+      }
+      .cta {
+        width: 100%;
+        background: #583d35;
+        color: #fff;
+        border-radius: 13px;
+        padding: 14px;
+        font-weight: 900;
+        box-shadow: 0 5px #3d2923;
+      }
+      .cta span {
+        float: right;
+        font-size: 22px;
+      }
+      .note {
+        text-align: center;
+        font-size: 10px;
+        color: #b49a91;
+        margin: 16px 0 0;
+      }
+      .top {
+        height: 72px;
+        padding: 0 max(16px, calc((100% - 1050px) / 2));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #f1d9dc;
+        background: #ffffffb8;
+      }
+      .brand-mini {
+        font: 800 27px "Baloo 2";
+      }
+      .brand-mini em {
+        color: #c4708a;
+        font-style: normal;
+      }
+      .icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: white;
+        box-shadow: 0 3px #ead3cc;
+        color: #886156;
+        font-size: 22px;
+      }
+      .chip {
+        background: #fff;
+        padding: 6px 11px 6px 6px;
+        border-radius: 25px;
+        font-size: 12px;
+      }
+      .lobby-wrap {
+        max-width: 1000px;
+        margin: auto;
+        padding: 38px 18px;
+      }
+      .hero {
+        background: var(--blue);
+        border-radius: 28px;
+        padding: 35px 40px;
+        min-height: 265px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero:after {
+        content: "";
+        position: absolute;
+        bottom: -65px;
+        left: -4%;
+        width: 110%;
+        height: 130px;
+        border-radius: 50%;
+        background: var(--green);
+      }
+      .hero h2 {
+        font: 800 52px/0.9 "Baloo 2";
+        margin: 14px 0;
+      }
+      .hero p:not(.eyebrow) {
+        color: #638995;
+        max-width: 380px;
+        margin-bottom: 22px;
+      }
+      .hero .cta {
+        width: 205px;
+        position: relative;
+        z-index: 2;
+      }
+      .hero-bear {
+        position: absolute;
+        right: 90px;
+        bottom: 37px;
+        font-size: 70px;
+        z-index: 2;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 18px;
+        margin-top: 20px;
+      }
+      .sub h3 {
+        font: 800 22px "Baloo 2";
+        margin: 0;
+      }
+      .sub p {
+        color: #aa8c82;
+        font-size: 11px;
+        margin: 0;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 18px;
+        font-size: 13px;
+        color: #8e6e62;
+      }
+      .key {
+        background: white;
+        border: 2px solid #e4d2d0;
+        border-radius: 7px;
+        padding: 5px 8px;
+        box-shadow: 0 2px #ddc3be;
+      }
+      .rank {
+        list-style: none;
+        padding: 0;
+        margin: 15px 0 0;
+      }
+      .rank li {
+        display: grid;
+        grid-template-columns: 30px 1fr auto;
+        gap: 7px;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0e3de;
+        font-size: 13px;
+      }
+      .rank li:last-child {
+        border: 0;
+      }
+      .time {
+        color: #a36f79;
+      }
+      .game {
+        background: #c9eaf2;
+        overflow: hidden;
+      }
+      .hud {
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 17px;
+        background: #fffaf3;
+        position: relative;
+        z-index: 5;
+      }
+      .hud b {
+        color: #ae6f7e;
+      }
+      .world-wrap {
+        height: calc(100vh - 72px);
+        overflow: hidden;
+        position: relative;
+      }
+      .world {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1800px;
+        height: 100%;
+        background: linear-gradient(#c8eaf1 0 65%, #acd19e 65%);
+      }
+      .sun {
+        position: absolute;
+        left: 290px;
+        top: 45px;
+        font-size: 55px;
+        color: #f3cd72;
+      }
+      .hill {
+        position: absolute;
+        border-radius: 50% 50% 0 0;
+        background: #9fc6a5;
+      }
+      .h1 {
+        width: 700px;
+        height: 230px;
+        left: 50px;
+        top: 285px;
+        background: #b6d5cc;
+      }
+      .h2 {
+        width: 850px;
+        height: 270px;
+        left: 750px;
+        top: 300px;
+      }
+      .plat {
+        position: absolute;
+        height: 22px;
+        background: #9b704e;
+        border-radius: 7px;
+        border-bottom: 7px solid #76503d;
+      }
+      .ground {
+        height: 65px;
+        top: 450px !important;
+        left: 0;
+        width: 1800px;
+        border-radius: 0;
+      }
+      .bear-player {
+        position: absolute;
+        z-index: 4;
+        width: 62px;
+        height: 70px;
+      }
+      .bear-game {
+        transform: scale(1.15);
+        transform-origin: bottom;
+      }
+      .heart {
+        position: absolute;
+        color: #e77e9a;
+        font-size: 29px;
+        z-index: 4;
+        animation: bob 1s alternate infinite;
+      }
+      @keyframes bob {
+        to {
+          transform: translateY(-8px);
+        }
+      }
+      .flag {
+        position: absolute;
+        font-size: 60px;
+        color: #e687a0;
+      }
+      .touch {
+        display: none;
+      }
+      .finish {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: linear-gradient(140deg, #fff3f7, #f8d3df);
+      }
+      .finish.active {
+        display: flex;
+      }
+      .finish h2 {
+        font: 800 43px/1 "Baloo 2";
+        margin: 13px 0;
+      }
+      .finish-bear {
+        font-size: 75px;
+        background: var(--blue);
+        border-radius: 50%;
+        width: 115px;
+        height: 115px;
+        display: grid;
+        place-items: center;
+        margin: auto;
+      }
+      .result {
+        display: flex;
+        justify-content: space-around;
+        padding: 17px;
+        margin: 20px 0 10px;
+      }
+      .result small {
+        display: block;
+        font-size: 10px;
+        color: #a98c83;
+      }
+      .result strong {
+        font: 800 25px "Baloo 2";
+        color: #bd7188;
+      }
+      .pause {
+        display: none;
+        position: absolute;
+        inset: 0;
+        background: #533d3548;
+        place-items: center;
+        z-index: 8;
+      }
+      .pause.open {
+        display: grid;
+      }
+      .pause .panel {
+        text-align: center;
+        width: 280px;
+      }
+      .pause h2 {
+        margin: 7px 0;
+      }
+      .pause p {
+        font-size: 13px;
+        color: #987970;
+      }
+      @media (max-width: 750px) {
+        .account {
+          display: block;
+          padding: 27px 18px;
+        }
+        .brand {
+          text-align: center;
+        }
+        .logo {
+          margin: auto;
+        }
+        .brand h1 {
+          font-size: 58px;
+          margin: 19px 0 14px;
+        }
+        .intro {
+          margin: auto;
+          font-size: 14px;
+        }
+        .stats {
+          justify-content: center;
+          margin: 15px 0 23px;
+        }
+        .account .panel {
+          max-width: 420px;
+          margin: auto;
+        }
+        .lobby-wrap {
+          padding: 22px 14px;
+        }
+        .hero {
+          padding: 27px 24px;
+          min-height: 315px;
+        }
+        .hero h2 {
+          font-size: 43px;
+        }
+        .hero-bear {
+          right: 18px;
+          bottom: 32px;
+          transform: scale(0.65);
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .top {
+          padding: 0 13px;
+        }
+        .brand-mini {
+          font-size: 23px;
+        }
+        .hud {
+          height: 64px;
+          font-size: 12px;
+        }
+        .world-wrap {
+          height: calc(100vh - 64px);
+        }
+        .touch {
+          display: flex;
+          position: fixed;
+          bottom: 22px;
+          left: 50%;
+          transform: translateX(-50%);
+          gap: 10px;
+          z-index: 10;
+        }
+        .touch button {
+          width: 58px;
+          height: 48px;
+          border-radius: 14px;
+          background: #fff;
+          color: #845b52;
+          font-size: 24px;
+          box-shadow: 0 3px #c99d91;
+        }
+      }
+      .lobby-tools {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+      .secondary {
+        background: #fff;
+        color: #896055;
+        border: 2px solid #e8cfc9;
+        border-radius: 14px;
+        padding: 12px 16px;
+        font-weight: 900;
+      }
+      .admin-link {
+        display: block;
+        margin: 18px auto 0;
+        background: none;
+        color: #a97960;
+        font-size: 12px;
+        text-decoration: underline;
+      }
+      .qr-box {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        gap: 14px;
+        align-items: center;
+        margin-top: 20px;
+        padding: 13px;
+        background: #fff4f6;
+        border-radius: 16px;
+      }
+      .qr-box img {
+        width: 100px;
+        height: 100px;
+        background: #fff;
+        border-radius: 9px;
+        padding: 5px;
+      }
+      .qr-box p {
+        font-size: 11px;
+        line-height: 1.4;
+        margin: 0;
+        color: #916f63;
+      }
+      .admin-wrap {
+        max-width: 900px;
+        margin: auto;
+        padding: 28px 18px;
+      }
+      .admin-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+      .admin-head h2 {
+        font: 800 42px "Baloo 2";
+        margin: 0;
+      }
+      .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .admin-table th,
+      .admin-table td {
+        text-align: left;
+        padding: 13px 10px;
+        border-bottom: 1px solid #f0dcda;
+      }
+      .admin-table th {
+        color: #a56e7b;
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+      .empty-admin {
+        text-align: center;
+        padding: 34px;
+        color: #a38379;
+      }
+      .badge-live {
+        display: inline-block;
+        background: #dceff4;
+        color: #5890a3;
+        border-radius: 20px;
+        padding: 6px 10px;
+        font-size: 10px;
+        font-weight: 900;
+      }
+      .online-note {
+        font-size: 11px;
+        color: #9a776b;
+        line-height: 1.4;
+        margin: 20px 0 0;
+      }
+      @media (max-width: 760px) {
+        .account {
+          display: block;
+          padding-top: 40px;
+        }
+        .brand {
+          margin-bottom: 35px;
+        }
+        .admin-head h2 {
+          font-size: 32px;
+        }
+        .qr-box {
+          grid-template-columns: 90px 1fr;
+        }
+        .qr-box img {
+          width: 85px;
+          height: 85px;
+        }
+      }
+    </style>
+    <style>
+      html,
+      body {
+        min-width: 320px;
+        overflow-x: hidden;
+      }
+      .game {
+        height: 100vh;
+        min-height: 520px;
+        overflow: hidden;
+      }
+      .world-wrap {
+        height: calc(100vh - 64px);
+        min-height: 456px;
+        overflow: hidden;
+        position: relative;
+      }
+      .world {
+        height: 100%;
+        min-height: 520px;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .hud {
+        min-height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 18px;
+        position: relative;
+        z-index: 5;
+      }
+      .hud > span {
+        white-space: nowrap;
+      }
+      .touch {
+        display: none;
+        position: absolute;
+        z-index: 10;
+        bottom: 18px;
+        left: 0;
+        right: 0;
+        justify-content: space-between;
+        padding: 0 22px;
+        pointer-events: none;
+      }
+      .touch button {
+        pointer-events: auto;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: #fff9;
+        color: var(--ink);
+        border: 2px solid #e4baca;
+        box-shadow: 0 5px #c994a8;
+        font-size: 25px;
+        touch-action: none;
+      }
+      .touch button:nth-child(2) {
+        margin: 0 auto 0 18px;
+      }
+      .touch button:first-child {
+        margin-right: 0;
+      }
+      .touch button:last-child {
+        margin-left: auto;
+      }
+      .pause {
+        z-index: 20;
+      }
+      @media (max-width: 760px) {
+        .account {
+          padding: 28px 16px 36px;
+        }
+        .brand h1 {
+          font-size: 56px;
+          margin: 18px 0 14px;
+        }
+        .intro {
+          font-size: 14px;
+        }
+        .panel {
+          padding: 21px;
+          border-radius: 20px;
+        }
+        .top {
+          padding: 14px 16px;
+        }
+        .brand-mini {
+          font-size: 20px;
+        }
+        .chip {
+          font-size: 10px;
+        }
+        .lobby-wrap {
+          padding: 22px 14px;
+        }
+        .hero {
+          padding: 26px 22px;
+          min-height: 285px;
+        }
+        .hero h2 {
+          font-size: 45px;
+        }
+        .hero-bear {
+          display: none;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        .sub {
+          padding: 20px;
+        }
+        .lobby-tools {
+          margin-top: 14px;
+        }
+        .hud {
+          height: 62px;
+          padding: 8px 10px;
+          font-size: 10px;
+        }
+        .hud > b {
+          font-size: 9px;
+        }
+        .hud .icon {
+          width: 34px;
+          height: 34px;
+          font-size: 18px;
+        }
+        .world-wrap {
+          height: calc(100vh - 62px);
+          min-height: 458px;
+        }
+        .touch {
+          display: flex;
+        }
+        .pause .panel {
+          margin: 20px;
+        }
+        .finish {
+          padding: 20px 14px;
+        }
+        .finish h2 {
+          font-size: 38px;
+        }
+        .result {
+          gap: 20px;
+          padding: 18px;
+        }
+        .admin-table {
+          font-size: 11px;
+        }
+        .admin-table th,
+        .admin-table td {
+          padding: 10px 5px;
+        }
+        .admin-table th:nth-child(3),
+        .admin-table td:nth-child(3) {
+          display: none;
+        }
+      }
+      @media (min-width: 761px) and (max-height: 650px) {
+        .world-wrap {
+          height: calc(100vh - 58px);
+        }
+        .hud {
+          min-height: 58px;
+        }
+        .touch {
+          display: none;
+        }
+      }
+    </style>
+    <style>
+      #openadmin {
+        display: none !important;
+      }
+      .lobby-tools {
+        gap: 7px;
+      }
+      .lobby-tools .secondary {
+        padding: 9px 12px;
+        font-size: 12px;
+      }
+      @media (max-width: 760px) {
+        .account {
+          height: 100dvh;
+          min-height: 0;
+          overflow: hidden;
+          padding: 14px 12px 18px;
+        }
+        .brand {
+          margin-bottom: 15px;
+          text-align: center;
+        }
+        .logo {
+          width: 54px;
+          height: 54px;
+          border-radius: 18px;
+          font-size: 22px;
+          box-shadow: 0 5px #db98af;
+          margin: auto;
+        }
+        .eyebrow {
+          font-size: 8px;
+          letter-spacing: 1.3px;
+        }
+        .brand h1 {
+          font-size: 39px;
+          line-height: 0.86;
+          margin: 10px 0 8px;
+        }
+        .intro {
+          font-size: 11px;
+          line-height: 1.25;
+          max-width: 280px;
+          margin: 0 auto;
+        }
+        .stats {
+          justify-content: center;
+          gap: 14px;
+          margin-top: 10px;
+          font-size: 10px;
+        }
+        .account .panel {
+          padding: 14px 16px;
+          border-width: 2px;
+          border-radius: 16px;
+        }
+        .account .panel h2 {
+          font-size: 23px;
+          margin: 7px 0 0;
+        }
+        .account .muted {
+          font-size: 10px;
+          margin-bottom: 10px;
+        }
+        .account label,
+        .account legend {
+          font-size: 10px;
+        }
+        .account input[type="text"],
+        .account input:not([type]) {
+          padding: 9px;
+          margin-bottom: 10px;
+          border-radius: 9px;
+        }
+        .account fieldset {
+          margin-bottom: 10px;
+        }
+        .choices {
+          gap: 6px;
+          margin-top: 5px;
+        }
+        .choice {
+          padding: 6px;
+          border-radius: 10px;
+          font-size: 11px;
+        }
+        .choice small {
+          font-size: 7px;
+          bottom: 3px;
+          right: 5px;
+        }
+        .choice .bear {
+          transform: scale(0.7);
+          transform-origin: left center;
+          width: 40px;
+        }
+        .account .cta {
+          padding: 10px 14px;
+          font-size: 12px;
+          width: 100%;
+        }
+        .account .note {
+          font-size: 9px;
+          margin: 7px 0 0;
+        }
+        .account .panel > b {
+          font-size: 8px !important;
+          padding: 4px 8px !important;
+        }
+      }
+    </style>
+    <style>
+      .fallen h2 {
+        color: #8b5d50;
+      }
+      .fallen .finish-bear {
+        background: #b9dfeb;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          if (typeof plats !== "undefined") {
+            plats[0].w = 180;
+            document.querySelector(".ground").style.width = "180px";
+            plats.slice(1).forEach((p) => (p.w = Math.max(105, p.w - 28)));
+          }
+          const checkFall = () => {
+            if (typeof S !== "undefined" && S.run && !S.pause && S.y > 540) {
+              S.run = false;
+              document.querySelector("#finish").classList.add("fallen");
+              document.querySelector("#finishname").textContent = "você caiu";
+              document.querySelector("#finishtime").textContent = fmt(S.time);
+              document.querySelector("#finishhearts").textContent = S.hearts;
+              document.querySelector("#record").textContent =
+                "Tente de novo e alcance a próxima plataforma!";
+              const button = document.querySelector("#lobbyagain");
+              button.innerHTML = "Tentar novamente <span>↻</span>";
+              button.onclick = () => launch();
+              screen("finish");
+            }
+          };
+          setInterval(checkFall, 60);
+        }, 0);
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          const extra = [
+            { x: 1725, y: 250, w: 135 },
+            { x: 1895, y: 350, w: 120 },
+            { x: 2050, y: 275, w: 145 },
+            { x: 2225, y: 190, w: 125 },
+            { x: 2380, y: 315, w: 140 },
+            { x: 2550, y: 230, w: 120 },
+            { x: 2700, y: 350, w: 135 },
+            { x: 2870, y: 255, w: 125 },
+            { x: 3030, y: 170, w: 150 },
+          ];
+          extra.forEach((p) => {
+            const el = document.createElement("div");
+            el.className = "plat";
+            el.style.cssText = `left:${p.x}px;top:${p.y}px;width:${p.w}px;background:#${p.x % 2 ? "a97960" : "c9829a"}`;
+            document.querySelector("#world").appendChild(el);
+            plats.push(p);
+          });
+          document.querySelector(".flag").style.left = "3140px";
+          document.querySelector("#world").style.width = "3300px";
+          const complete = window.finish;
+          if (typeof complete === "function")
+            window.finish = () => {
+              if (S.x > 3000) complete();
+            };
+        }, 0);
+      });
+    </script>
+    <style>
+      #world {
+        width: 3300px;
+      }
+      .game {
+        background: #f7dce5;
+      }
+      .game .hud,
+      .game .world-wrap {
+        width: min(calc(100% - 28px), 1180px);
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .game .hud {
+        border-radius: 18px 18px 0 0;
+        background: #fffaf3;
+      }
+      .game .world-wrap {
+        border: 5px solid #fffaf3;
+        border-top: 0;
+        border-radius: 0 0 22px 22px;
+        box-shadow: 0 12px 30px #8d625426;
+      }
+      @media (orientation: portrait) and (max-width: 760px) {
+        .game {
+          height: 100dvh;
+          min-height: 0;
+        }
+        .game .hud,
+        .game .world-wrap {
+          width: 100%;
+          margin: 0;
+          border-radius: 0;
+          border-left: 0;
+          border-right: 0;
+        }
+        .world-wrap {
+          height: calc(100dvh - 62px);
+          min-height: 0;
+        }
+        .hud {
+          padding: 7px 9px;
+        }
+        .hud > span {
+          font-size: 9px;
+        }
+        .touch {
+          bottom: 14px;
+        }
+        .touch button {
+          width: 52px;
+          height: 52px;
+          font-size: 22px;
+        }
+        .world {
+          min-height: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="screen active" id="account">
+      <div class="account">
+        <div class="brand">
+          <div class="logo">●ᴗ●</div>
+          <p class="eyebrow">UMA AVENTURA DE PLATAFORMAS</p>
+          <h1>Ursinho<br /><em>Aventura</em></h1>
+          <p class="intro">
+            Corra, pule e pegue os corações para chegar ao fim da floresta!
+          </p>
+          <div class="stats"><span>♡ 3 mundos</span><span>★ ranking</span></div>
+        </div>
+        <form class="panel" id="form">
+          <b
+            style="
+              background: #dceff4;
+              color: #5890a3;
+              border-radius: 20px;
+              padding: 6px 12px;
+              font-size: 11px;
+            "
+            >1 DE 2</b
+          >
+          <h2>Crie seu perfil</h2>
+          <p class="muted">Seu nome vai aparecer no ranking!</p>
+          <label for="name">Como você se chama?</label
+          ><input
+            id="name"
+            maxlength="14"
+            placeholder="Digite seu nome"
+            required
+          />
+          <fieldset>
+            <legend>Escolha seu ursinho</legend>
+            <div class="choices">
+              <label
+                ><input name="bear" type="radio" value="menina" checked /><span
+                  class="choice"
+                  ><i class="bear"></i><b>Luna</b><small>menina</small></span
+                ></label
+              ><label
+                ><input name="bear" type="radio" value="menino" /><span
+                  class="choice boy"
+                  ><i class="bear"></i><b>Leo</b><small>menino</small></span
+                ></label
+              >
+            </div>
+          </fieldset>
+          <button class="cta">Entrar na aventura <span>→</span></button>
+          <p class="note">Seu perfil fica salvo neste navegador.</p>
+        </form>
+      </div>
+    </section>
+    <section class="screen" id="lobby">
+      <header class="top">
+        <button class="icon" id="back">↩</button>
+        <div class="brand-mini">Ursinho <em>Aventura</em></div>
+        <div class="chip" id="chip">●ᴗ● Jogador</div>
+      </header>
+      <div class="lobby-wrap">
+        <div class="hero">
+          <p class="eyebrow">FLORESTA DOCE · FASE 1</p>
+          <h2>Pronto para<br />brincar?</h2>
+          <p>O recorde é de quem chega ao final mais rápido. Você consegue?</p>
+          <button class="cta" id="start">Começar a fase <span>→</span></button>
+          <div class="hero-bear">●ᴗ●</div>
+        </div>
+        <div class="grid">
+          <div class="panel sub">
+            <h3>Como jogar</h3>
+            <p>É simples assim!</p>
+            <div class="row"><span class="key">← →</span>Andar</div>
+            <div class="row"><span class="key">ESPAÇO</span>Pular</div>
+            <div class="row">
+              <span style="color: #e77e9a; font-size: 22px">♥</span>Pegue
+              corações
+            </div>
+          </div>
+          <div class="panel sub">
+            <h3>★ Melhores aventureiros</h3>
+            <p>Quem chegou mais rápido?</p>
+            <ol class="rank" id="rank"></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="screen game" id="game">
+      <header class="hud">
+        <button class="icon" id="quit">×</button><b>FLORESTA DOCE · FASE 1</b
+        ><span
+          >♥ <b id="count">0</b>/5　⏱ <b id="timer">00:00</b>　<button
+            class="icon"
+            id="pause"
+          >
+            Ⅱ
+          </button></span
+        >
+      </header>
+      <div class="world-wrap" id="view">
+        <div class="world" id="world">
+          <div class="sun">☀</div>
+          <div class="hill h1"></div>
+          <div class="hill h2"></div>
+          <div class="plat ground"></div>
+          <div class="plat" style="left: 210px; top: 350px; width: 170px"></div>
+          <div class="plat" style="left: 470px; top: 275px; width: 145px"></div>
+          <div class="plat" style="left: 710px; top: 365px; width: 190px"></div>
+          <div
+            class="plat"
+            style="left: 1010px; top: 290px; width: 150px"
+          ></div>
+          <div
+            class="plat"
+            style="left: 1250px; top: 215px; width: 180px"
+          ></div>
+          <div
+            class="plat"
+            style="left: 1510px; top: 330px; width: 170px; background: #c9829a"
+          ></div>
+          <div class="flag" style="left: 1640px; top: 245px">⚑</div>
+          <div id="hearts"></div>
+          <div class="bear-player" id="player">
+            <i class="bear bear-game"></i>
+          </div>
+        </div>
+        <div class="touch">
+          <button data-key="ArrowLeft">←</button
+          ><button data-key="Space">↑</button
+          ><button data-key="ArrowRight">→</button>
+        </div>
+        <div class="pause" id="pausebox">
+          <div class="panel">
+            <h2>Pausa gostosa</h2>
+            <p>Descanse um pouquinho!</p>
+            <button class="cta" id="resume">Continuar <span>→</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="screen finish" id="finish">
+      <div>
+        <div class="finish-bear">^ᴗ^</div>
+        <p class="eyebrow" style="margin-top: 15px">FASE COMPLETA!</p>
+        <h2>Você foi incrível,<br /><em id="finishname">aventureiro</em>!</h2>
+        <div class="panel result">
+          <div>
+            <small>SEU TEMPO</small><strong id="finishtime">00:00</strong>
+          </div>
+          <div>
+            <small>CORAÇÕES</small
+            ><strong>♥ <span id="finishhearts">5</span>/5</strong>
+          </div>
+        </div>
+        <p id="record" style="color: #c48749">★ Novo recorde!</p>
+        <button class="cta" id="lobbyagain" style="width: 220px">
+          Ver ranking <span>→</span>
+        </button>
+      </div>
+    </section>
+    <script>
+      const $ = (s) => document.querySelector(s),
+        screens = ["account", "lobby", "game", "finish"],
+        S = {
+          name: "",
+          bear: "",
+          x: 75,
+          y: 380,
+          vy: 0,
+          ground: true,
+          hearts: 0,
+          start: 0,
+          time: 0,
+          run: false,
+          pause: false,
+          keys: new Set(),
+          got: new Set(),
+        };
+      const plats = [
+          { x: 0, y: 450, w: 1800 },
+          { x: 210, y: 350, w: 170 },
+          { x: 470, y: 275, w: 145 },
+          { x: 710, y: 365, w: 190 },
+          { x: 1010, y: 290, w: 150 },
+          { x: 1250, y: 215, w: 180 },
+          { x: 1510, y: 330, w: 170 },
+        ],
+        hp = [
+          { x: 270, y: 310 },
+          { x: 525, y: 235 },
+          { x: 785, y: 325 },
+          { x: 1065, y: 250 },
+          { x: 1325, y: 175 },
+        ];
+      function screen(x) {
+        screens.forEach((n) => $("#" + n).classList.toggle("active", n === x));
+      }
+      function accounts() {
+        return JSON.parse(localStorage.getItem("ursinho") || "[]");
+      }
+      function fmt(t) {
+        let s = Math.floor(t / 1000);
+        return (
+          String(Math.floor(s / 60)).padStart(2, "0") +
+          ":" +
+          String(s % 60).padStart(2, "0")
+        );
+      }
+      function save(a) {
+        let q = accounts().filter(
+          (x) => x.name.toLowerCase() != a.name.toLowerCase(),
+        );
+        q.push(a);
+        localStorage.setItem("ursinho", JSON.stringify(q));
+      }
+      function render() {
+        let q = accounts()
+          .filter((x) => x.time)
+          .sort((a, b) => a.time - b.time);
+        $("#rank").innerHTML = (
+          q.length ? q.slice(0, 5) : [{ name: "Seja o primeiro!", time: 0 }]
+        )
+          .map(
+            (x, i) =>
+              `<li><b>${i ? i + 1 : "★"}</b><span>●ᴗ● ${x.name}</span><span class="time">${x.time ? fmt(x.time) : "--:--"}</span></li>`,
+          )
+          .join("");
+      }
+      function launch() {
+        screen("game");
+        S.x = 75;
+        S.y = 380;
+        S.vy = 0;
+        S.ground = true;
+        S.hearts = 0;
+        S.got.clear();
+        S.start = performance.now();
+        S.run = true;
+        S.pause = false;
+        $("#count").textContent = 0;
+        $("#hearts").innerHTML = hp
+          .map(
+            (h, i) =>
+              `<span class="heart" data-i="${i}" style="left:${h.x}px;top:${h.y}px">♥</span>`,
+          )
+          .join("");
+        requestAnimationFrame(loop);
+      }
+      function jump() {
+        if (S.ground && !S.pause) {
+          S.vy = -13;
+          S.ground = false;
+        }
+      }
+      function loop(now) {
+        if (!S.run) return;
+        if (!S.pause) {
+          S.time = now - S.start;
+          $("#timer").textContent = fmt(S.time);
+          S.x = Math.max(
+            0,
+            Math.min(
+              1690,
+              S.x +
+                ((S.keys.has("ArrowRight") ? 1 : 0) -
+                  (S.keys.has("ArrowLeft") ? 1 : 0)) *
+                  4.3,
+            ),
+          );
+          S.vy += 0.58;
+          S.y += S.vy;
+          S.ground = false;
+          for (let p of plats)
+            if (
+              S.vy >= 0 &&
+              S.x + 55 > p.x &&
+              S.x + 8 < p.x + p.w &&
+              S.y + 70 >= p.y &&
+              S.y + 70 <= p.y + 25
+            ) {
+              S.y = p.y - 70;
+              S.vy = 0;
+              S.ground = true;
+            }
+          hp.forEach((h, i) => {
+            if (
+              !S.got.has(i) &&
+              Math.abs(S.x - h.x) < 38 &&
+              Math.abs(S.y - h.y) < 48
+            ) {
+              S.got.add(i);
+              S.hearts++;
+              $(`[data-i="${i}"]`).style.display = "none";
+              $("#count").textContent = S.hearts;
+            }
+          });
+          $("#player").style.left = S.x + "px";
+          $("#player").style.top = S.y + "px";
+          $("#view").scrollLeft = Math.max(0, S.x - innerWidth * 0.35);
+          if (S.x > 1560 && S.y < 390) finish();
+        }
+        requestAnimationFrame(loop);
+      }
+      function finish() {
+        S.run = false;
+        let old = accounts().find(
+            (x) => x.name.toLowerCase() == S.name.toLowerCase(),
+          ),
+          record = !old || !old.time || S.time < old.time;
+        save({ name: S.name, bear: S.bear, time: record ? S.time : old.time });
+        $("#finishname").textContent = S.name;
+        $("#finishtime").textContent = fmt(S.time);
+        $("#finishhearts").textContent = S.hearts;
+        $("#record").style.visibility = record ? "visible" : "hidden";
+        screen("finish");
+      }
+      $("#form").onsubmit = (e) => {
+        e.preventDefault();
+        S.name = $("#name").value.trim();
+        S.bear = $("input[name=bear]:checked").value;
+        if (!S.name) return;
+        save({ name: S.name, bear: S.bear });
+        $("#chip").textContent = "●ᴗ● " + S.name;
+        render();
+        screen("lobby");
+      };
+      $("#start").onclick = launch;
+      $("#back").onclick = () => screen("account");
+      $("#quit").onclick = () => {
+        S.run = false;
+        screen("lobby");
+      };
+      $("#lobbyagain").onclick = () => {
+        render();
+        screen("lobby");
+      };
+      $("#pause").onclick = () => {
+        S.pause = true;
+        $("#pausebox").classList.add("open");
+      };
+      $("#resume").onclick = () => {
+        S.pause = false;
+        S.start = performance.now() - S.time;
+        $("#pausebox").classList.remove("open");
+      };
+      onkeydown = (e) => {
+        if (["ArrowLeft", "ArrowRight", "Space"].includes(e.code))
+          e.preventDefault();
+        if (e.code === "Space") jump();
+        S.keys.add(e.code);
+      };
+      onkeyup = (e) => S.keys.delete(e.code);
+      document.querySelectorAll(".touch button").forEach((b) => {
+        b.onpointerdown = () =>
+          b.dataset.key === "Space" ? jump() : S.keys.add(b.dataset.key);
+        b.onpointerup = () => S.keys.delete(b.dataset.key);
+      });
+      render();
+      document.body.insertAdjacentHTML(
+        "beforeend",
+        '<section class="screen" id="admin"><div class="admin-wrap"><div class="admin-head"><div><span class="badge-live">PAINEL DA FEIRA</span><h2>Ranking dos aventureiros</h2></div><button class="icon" id="closeadmin">×</button></div><div class="panel"><table class="admin-table"><thead><tr><th>POSIÇÃO</th><th>JOGADOR</th><th>PERSONAGEM</th><th>TEMPO</th><th>CORAÇÕES</th></tr></thead><tbody id="adminrank"></tbody></table><p class="online-note">Esta estação guarda os resultados neste navegador. Para compartilhar entre computadores, conecte a função save() a uma API ou banco de dados da feira.</p></div><button class="secondary" id="adminback">Voltar ao lobby</button></div></section>',
+      );
+      const t = document.createElement("div");
+      t.className = "lobby-tools";
+      t.innerHTML =
+        '<button class="secondary" id="openadmin">Acesso do administrador</button>';
+      document.querySelector("#lobby .lobby-wrap").appendChild(t);
+      function a() {
+        const p = prompt("PIN do administrador:");
+        if (p !== "2026") {
+          if (p !== null) alert("PIN incorreto.");
+          return;
+        }
+        document
+          .querySelectorAll(".screen")
+          .forEach((x) => x.classList.remove("active"));
+        document.querySelector("#admin").classList.add("active");
+        const r = accounts()
+          .filter((x) => x.time)
+          .sort((x, y) => x.time - y.time);
+        document.querySelector("#adminrank").innerHTML = r.length
+          ? r
+              .map(
+                (x, i) =>
+                  "<tr><td>" +
+                  (i + 1) +
+                  "</td><td>" +
+                  x.name +
+                  "</td><td>" +
+                  (x.bear === "menina" ? "Luna" : "Leo") +
+                  "</td><td>" +
+                  fmt(x.time) +
+                  "</td><td>♥ " +
+                  (x.hearts || 0) +
+                  "/5</td></tr>",
+              )
+              .join("")
+          : '<tr><td colspan="5" class="empty-admin">Ainda não há partidas concluídas.</td></tr>';
+      }
+      document.querySelector("#openadmin").onclick = a;
+      document.querySelector("#closeadmin").onclick = () => screen("lobby");
+      document.querySelector("#adminback").onclick = () => screen("lobby");
+    </script>
+  </body>
+</html>
