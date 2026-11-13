@@ -1557,6 +1557,18 @@
           min-height: 0;
         }
       }
+      /* The QR only helps someone looking at a computer screen; on a phone it would
+         push "Entrar na aventura" out of the fixed-height mobile account screen. */
+      @media (max-width: 760px), (hover: none) and (pointer: coarse) {
+        .account .qr-box {
+          display: none;
+        }
+      }
+      @media (max-width: 760px) {
+        .account {
+          overflow-y: auto;
+        }
+      }
       .touch button {
         user-select: none;
         -webkit-user-select: none;
