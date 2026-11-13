@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "serve": "python3 -m http.server 8765 --bind 127.0.0.1",
-    "test": "node tests/game.test.mjs && node tests/ranking-supabase.test.mjs && node tests/admin-config.test.mjs && node tests/qr.test.mjs"
+    "test": "node tests/game.test.mjs && node tests/ranking-supabase.test.mjs && node tests/admin-config.test.mjs && node tests/qr.test.mjs && node tests/touch.test.mjs"
   },
   "devDependencies": {
     "playwright": "1.49.1"

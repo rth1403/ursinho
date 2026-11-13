@@ -1530,6 +1530,38 @@
           min-height: 100%;
         }
       }
+      /* Touch devices get the on-screen controls regardless of width: a phone in
+         landscape is wider than the 760px breakpoint above. */
+      @media (hover: none) and (pointer: coarse) {
+        .touch {
+          display: flex;
+          position: fixed;
+          left: 0;
+          right: 0;
+          transform: none;
+          bottom: max(14px, env(safe-area-inset-bottom));
+        }
+      }
+      @media (orientation: landscape) and (max-height: 520px) {
+        .game {
+          height: 100dvh;
+          min-height: 0;
+        }
+        .game .hud {
+          height: 44px;
+          min-height: 0;
+          padding: 4px 10px;
+        }
+        .game .world-wrap {
+          height: calc(100dvh - 44px);
+          min-height: 0;
+        }
+      }
+      .touch button {
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+      }
     </style>
   </head>
   <body>
@@ -2195,9 +2227,19 @@
         $("#total").textContent = lvl.hp.length;
         updateLabels();
       }
+      // Level coordinates assume a 520px-tall world; short screens (a phone in
+      // landscape) shrink the whole world instead of cutting off the ground.
+      const WORLD_HEIGHT = 520;
+      function fitWorld() {
+        const h = $("#view").clientHeight;
+        S.zoom = h && h < WORLD_HEIGHT ? h / WORLD_HEIGHT : 1;
+        $("#world").style.zoom = S.zoom < 1 ? S.zoom : "";
+      }
+      addEventListener("resize", fitWorld);
       function launch() {
         renderLevel(S.level);
         screen("game");
+        fitWorld();
         $("#player").classList.toggle("boy", S.bear === "menino");
         S.x = 75;
         S.y = 380;
@@ -2292,7 +2334,7 @@
           if (S.keys.has("ArrowLeft")) $("#player").classList.add("face-left");
           else if (S.keys.has("ArrowRight"))
             $("#player").classList.remove("face-left");
-          $("#view").scrollLeft = Math.max(0, S.x - innerWidth * 0.35);
+          $("#view").scrollLeft = Math.max(0, S.x * (S.zoom || 1) - innerWidth * 0.35);
           if (S.y > 540) died();
           else if (S.x > lvl.finishX && S.y < 390) finish();
         }
@@ -2452,7 +2494,10 @@
       document.querySelectorAll(".touch button").forEach((b) => {
         b.onpointerdown = () =>
           b.dataset.key === "Space" ? jump() : S.keys.add(b.dataset.key);
-        b.onpointerup = () => S.keys.delete(b.dataset.key);
+        // A finger sliding off the button never fires pointerup on it.
+        const release = () => S.keys.delete(b.dataset.key);
+        b.onpointerup = b.onpointercancel = b.onpointerleave = release;
+        b.oncontextmenu = (e) => e.preventDefault();
       });
       loadSettings().then(flushPending).then(render);
       (() => {
