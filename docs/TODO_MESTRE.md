@@ -1,10 +1,12 @@
 # TODO Mestre — Ursinho Aventura
 
 ## Fazendo
+- [ ] bug: Rebeca loga mas não vê o admin — com Supabase ligado o login dela depende do usuário `ADMIN_EMAIL` existir no Supabase Auth com a mesma senha (itens em "Esperando usuário")
+- [x] feat: QR code na tela inicial apontando para https://rth1403.github.io/ursinho/ (CA: `#account` exibe um QR em SVG inline, sem dependência externa, com o link visível ao lado)
 
 ## Esperando usuário
 - [x] Criar o projeto no Supabase e informar a URL e a publishable key (no `.env`)
-- [ ] Rodar `supabase/schema.sql` no SQL Editor do Supabase
+- [x] Rodar `supabase/schema.sql` no SQL Editor do Supabase
 - [ ] Criar o usuário da Rebeca no Supabase Auth, cadastrá-lo na tabela `admins` e informar o e-mail (vai em `ADMIN_EMAIL`)
 - [ ] Trocar a senha do banco (`SENHA_SUPABASE`): parte dela apareceu no log da sessão em 2026-11-12
 
