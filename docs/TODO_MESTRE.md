@@ -1,6 +1,7 @@
 # TODO Mestre — Ursinho Aventura
 
 ## Fazendo
+- [x] fix: controles de toque (← ↑ →) em todo aparelho de toque, inclusive celular deitado (CA1: celular em paisagem 844×390 mostra os 3 botões; CA2: computador sem toque não mostra; CA3: dedo que escorrega para fora do botão não deixa o ursinho andando sozinho; CA4: segurar → e tocar ↑ ao mesmo tempo funciona)
 - [ ] bug: Rebeca loga mas não vê o admin — com Supabase ligado o login dela depende do usuário `ADMIN_EMAIL` existir no Supabase Auth com a mesma senha (itens em "Esperando usuário")
 - [x] feat: QR code na tela inicial apontando para https://rth1403.github.io/ursinho/ (CA: `#account` exibe um QR em SVG inline, sem dependência externa, com o link visível ao lado)
 
